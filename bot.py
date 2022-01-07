@@ -34,7 +34,7 @@ async def on_raw_reaction_add(payload):
         await member.add_roles(role)
         
         name = f"{member.nick} ({member.name})" if member.nick else member.name
-        print(f"Assigned {name} to {role.name}")
+        print(f"Added {name} to {role.name}")
         sys.stdout.flush()
 
 @bot.slash_command()
