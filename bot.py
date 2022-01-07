@@ -59,6 +59,11 @@ async def anonymous(inter, message):
 
     channel = bot.get_channel(ANONYMOUS_MSGS_CHANNEL_ID)
     await channel.send(message)
-    await inter.response.send_message("Your anonymous message has been sent to the board!")
+    await inter.response.send_message("Sent.")
+    await inter.delete_original_message()
+    await inter.author.send("Your anonymous message has been sent to the board.")
+
+    print("Sent anonymous message.")
+    sys.stdout.flush()
 
 bot.run(TOKEN)
