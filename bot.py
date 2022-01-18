@@ -6,10 +6,6 @@ import subprocess
 from config import *
 from db import *
 
-ANONYMOUS_MSGS_CHANNEL_ID = int(os.getenv("ANONYMOUS_MSGS_CHANNEL_ID"))
-
-ADMIN_ROLE_ID = int(os.getenv("ADMIN_ROLE_ID"))
-
 bot = commands.Bot(test_guilds=[GUILD_ID])
 
 

@@ -3,8 +3,13 @@ from dotenv import load_dotenv
 import re
 
 load_dotenv()
+
 TOKEN = os.getenv("TOKEN")
 GUILD_ID = int(os.getenv("GUILD_ID"))
+
+ANONYMOUS_MSGS_CHANNEL_ID = int(os.getenv("ANONYMOUS_MSGS_CHANNEL_ID"))
+
+ADMIN_ROLE_ID = int(os.getenv("ADMIN_ROLE_ID"))
 
 RULES_MESSAGE_ID = int(os.getenv("RULES_MESSAGE_ID"))
 REACTION_EMOJI = os.getenv("REACTION_EMOJI")
