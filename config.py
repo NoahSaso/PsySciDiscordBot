@@ -20,4 +20,5 @@ MAIN_CHANNEL_ID = int(os.getenv("MAIN_CHANNEL_ID"))
 BIRTHDAY_PICKLE_FILE = os.path.join(
     os.path.dirname(__file__), os.getenv("BIRTHDAY_PICKLE_FILE", "birthday.p")
 )
+BIRTHDAY_PICKLE_FILE_LOCK = BIRTHDAY_PICKLE_FILE + ".lock"
 BIRTHDAY_REGEX = re.compile(r"^\d{2}\/\d{2}$")
