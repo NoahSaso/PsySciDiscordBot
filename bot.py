@@ -98,12 +98,12 @@ async def birthday(inter, birthday):
 
     Parameters
     ----------
-    birthday: Your birthday in the format MM/DD/YYYY
+    birthday: Your birthday in the MM/DD format
     """
 
     if not birthday or not BIRTHDAY_REGEX.match(birthday.strip()):
         return await inter.response.send_message(
-            "Invalid birthday format. Please use MM/DD/YYYY."
+            "Invalid birthday format. Please use MM/DD."
         )
     birthday = birthday.strip()
 

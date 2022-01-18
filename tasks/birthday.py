@@ -39,7 +39,7 @@ async def wish(users):
 
 
 if __name__ == "__main__":
-    today = datetime.now().strftime("%m/%d/%Y")
+    today = datetime.now().strftime("%m/%d")
     birthdays = get_birthdays()
 
     matching_users = [user for user, birthday in birthdays.items() if birthday == today]
