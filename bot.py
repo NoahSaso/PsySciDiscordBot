@@ -125,7 +125,7 @@ async def birthday(inter, birthday):
         )
     birthday = birthday.strip()
 
-    user = inter.author.id
+    user = inter.author.mention
 
     print_flush(f"Saved birthday for {user}: {birthday}")
     await inter.response.send_message(f"Saved {birthday} for {user}!")
