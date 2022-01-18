@@ -22,7 +22,7 @@ async def on_raw_reaction_add(payload):
     if payload.emoji.name == REACTION_EMOJI:
         member = payload.member
         guild = bot.get_guild(payload.guild_id)
-        role = guild.get_role(ROLE_ID)
+        role = guild.get_role(REACTION_ROLE_ID)
 
         await member.add_roles(role)
 

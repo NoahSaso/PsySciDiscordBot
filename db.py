@@ -20,7 +20,10 @@ def set_birthday(user, birthday):
     pickle.dump(birthdays, open(BIRTHDAY_PICKLE_FILE, "wb"))
 
 
-def get_birthday(user):
+def get_birthdays():
     ensure_birthday_file_exists()
     birthdays = pickle.load(open(BIRTHDAY_PICKLE_FILE, "rb"))
-    return birthdays.get(user)
+    return birthdays
+
+
+get_birthday = lambda user: get_birthdays().get(user)

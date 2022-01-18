@@ -13,7 +13,9 @@ ADMIN_ROLE_ID = int(os.getenv("ADMIN_ROLE_ID"))
 
 RULES_MESSAGE_ID = int(os.getenv("RULES_MESSAGE_ID"))
 REACTION_EMOJI = os.getenv("REACTION_EMOJI")
-ROLE_ID = int(os.getenv("ROLE_ID"))
+REACTION_ROLE_ID = int(os.getenv("REACTION_ROLE_ID"))
+
+MAIN_CHANNEL_ID = int(os.getenv("MAIN_CHANNEL_ID"))
 
 BIRTHDAY_PICKLE_FILE = os.path.join(
     os.path.dirname(__file__), os.getenv("BIRTHDAY_PICKLE_FILE", "birthday.p")
