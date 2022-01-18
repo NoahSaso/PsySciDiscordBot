@@ -126,9 +126,10 @@ async def birthday(inter, birthday):
     birthday = birthday.strip()
 
     user = inter.author.mention
+    set_birthday(user, birthday)
 
     print_flush(f"Saved birthday for {user}: {birthday}")
-    await inter.response.send_message(f"Saved {birthday} for {user}!")
+    await inter.response.send_message(f"Set your birthday to {birthday}.")
 
 
 bot.run(TOKEN)
