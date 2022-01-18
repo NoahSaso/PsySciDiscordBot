@@ -79,21 +79,6 @@ async def anonymous(inter, message):
 
 
 @bot.slash_command()
-async def birthday(inter, birthday):
-    """
-    Set your birthday so you can be celebrated by the computer overlords.
-
-    Parameters
-    ----------
-    birthday: Your birthday in the format MM/DD/YYYY
-    """
-
-    user = inter.author.name
-
-    print_flush(f"Saved birthday for {user}: {birthday}")
-
-
-@bot.slash_command()
 async def refresh_website(inter):
     """
     Update the website with the latest changes (must be a board member to activate).
@@ -122,6 +107,28 @@ async def refresh_website(inter):
     if response.returncode != 0:
         print_flush("website refresh stdout:", response.stdout.decode())
         print_flush("website refresh stderr:", response.stderr.decode())
+
+
+@bot.slash_command()
+async def birthday(inter, birthday):
+    """
+    Set your birthday so you can be celebrated by the computer overlords.
+
+    Parameters
+    ----------
+    birthday: Your birthday in the format MM/DD/YYYY
+    """
+
+    if not birthday or not BIRTHDAY_REGEX.match(birthday.strip()):
+        return await inter.response.send_message(
+            "Invalid birthday format. Please use MM/DD/YYYY."
+        )
+    birthday = birthday.strip()
+
+    user = inter.author.name
+
+    print_flush(f"Saved birthday for {user}: {birthday}")
+    await inter.response.send_message(f"Saved {birthday} for {user}!")
 
 
 bot.run(TOKEN)
