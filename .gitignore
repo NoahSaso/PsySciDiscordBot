@@ -130,6 +130,8 @@ dmypy.json
 
 # deployment stuff
 *.sh
+*.service
+run
 
 # db stuff
 *.p
