@@ -71,7 +71,7 @@ async def refresh_website(inter):
 
     print_flush("Refreshing website...")
 
-    await inter.response.send_message("Refreshing website from Notion (eta ~5 mins)...")
+    await inter.response.send_message("Refreshing website from Notion (will update this message once done)...")
 
     response = subprocess.run(
         ["/home/p/ps/psab/loconotion/update.sh"],
