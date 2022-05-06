@@ -71,7 +71,13 @@ async def refresh_website(inter):
 
     print_flush("Refreshing website...")
 
-    await inter.response.send_message("Refreshing website from Notion (will update this message once done)...")
+    await inter.response.send_message(
+        "Refreshing website from Notion (will update this message once done)..."
+    )
+    # Obtain the message ID so we can update it after a long time.
+    # Editing the message via the interaction fails after a while.
+    # I think the token expires, so the followup webhook is necessary.
+    msg_id = (await inter.original_message()).id
 
     response = subprocess.run(
         ["/home/p/ps/psab/loconotion/update.sh"],
@@ -83,7 +89,7 @@ async def refresh_website(inter):
         if response.returncode == 0
         else f"Website refresh failed with exit code {response.returncode}. Check system log for details."
     )
-    await inter.edit_original_message(content=content)
+    await inter.followup.edit_message(msg_id, content=content)
 
     print_flush(content)
     if response.returncode != 0:
