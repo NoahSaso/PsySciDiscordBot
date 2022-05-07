@@ -6,6 +6,8 @@ from config import *
 from db import *
 from util import *
 from datetime import datetime
+import logging
+import traceback
 
 bot = commands.Bot(test_guilds=[GUILD_ID])
 
@@ -67,42 +69,45 @@ async def refresh_website(inter):
     Update the website with the latest changes (must be a board member to activate).
     """
 
-    if not await check_admin_and_respond_if_not(inter):
-        return
+    try:
+        if not await check_admin_and_respond_if_not(inter):
+            return
 
-    print_flush("Refreshing website...")
+        start = datetime.now()
+        print_flush("Refreshing website...")
 
-    start = datetime.now()
+        await inter.response.send_message(
+            "Refreshing website from Notion (will update this message once done)..."
+        )
+        # Obtain the message ID so we can update it after a long time.
+        # Editing the message via the interaction fails after a while.
+        # I think the token expires, so the followup webhook is necessary.
+        msg_id = (await inter.original_message()).id
 
-    await inter.response.send_message(
-        "Refreshing website from Notion (will update this message once done)..."
-    )
-    # Obtain the message ID so we can update it after a long time.
-    # Editing the message via the interaction fails after a while.
-    # I think the token expires, so the followup webhook is necessary.
-    msg_id = (await inter.original_message()).id
+        response = subprocess.Popen(
+            ["/home/p/ps/psab/loconotion/update.sh"],
+            stdout=subprocess.PIPE,
+        )
+        for c in iter(lambda: response.stdout.read(1), b""):
+            sys.stdout.buffer.write(c)
+            sys.stdout.buffer.flush()
+        returncode = response.wait()
 
-    response = subprocess.Popen(
-        ["/home/p/ps/psab/loconotion/update.sh"],
-        stdout=subprocess.PIPE,
-    )
-    for c in iter(lambda: response.stdout.read(1), b""):
-        sys.stdout.buffer.write(c)
-        sys.stdout.buffer.flush()
-    returncode = response.wait()
+        end = datetime.now()
 
-    end = datetime.now()
+        time_string = f"started {start.strftime('%H:%M:%S')}, ended {end.strftime('%H:%M:%S')}, took {end - start}"
 
-    time_string = f"started {start.strftime('%H:%M:%S')}, ended {end.strftime('%H:%M:%S')}, took {end - start}"
+        content = (
+            f"Website refreshed successfully. ({time_string})"
+            if returncode == 0
+            else f"Website refresh failed with exit code {returncode}. Check system log for details. ({time_string})"
+        )
+        await bot.get_message(msg_id).edit(content=content)
 
-    content = (
-        f"Website refreshed successfully. ({time_string})"
-        if returncode == 0
-        else f"Website refresh failed with exit code {returncode}. Check system log for details. ({time_string})"
-    )
-    await bot.get_message(msg_id).edit(content=content)
-
-    print_flush(content)
+        print_flush(content)
+    except Exception as e:
+        print_flush(f"Failed to refresh website: {e}")
+        logging.error(traceback.format_exc())
 
 
 @bot.slash_command()
