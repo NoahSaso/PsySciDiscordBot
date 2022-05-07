@@ -5,6 +5,7 @@ import subprocess
 from config import *
 from db import *
 from util import *
+from datetime import datetime
 
 bot = commands.Bot(test_guilds=[GUILD_ID])
 
@@ -71,6 +72,8 @@ async def refresh_website(inter):
 
     print_flush("Refreshing website...")
 
+    start = datetime.now()
+
     await inter.response.send_message(
         "Refreshing website from Notion (will update this message once done)..."
     )
@@ -88,10 +91,14 @@ async def refresh_website(inter):
         sys.stdout.buffer.flush()
     returncode = response.wait()
 
+    end = datetime.now()
+
+    time_string = f"started {start.strftime('%H:%M:%S')}, ended {end.strftime('%H:%M:%S')}, took {end - start}"
+
     content = (
-        "Website refreshed successfully."
+        f"Website refreshed successfully. ({time_string})"
         if returncode == 0
-        else f"Website refresh failed with exit code {returncode}. Check system log for details."
+        else f"Website refresh failed with exit code {returncode}. Check system log for details. ({time_string})"
     )
     await bot.get_message(msg_id).edit(content=content)
 
