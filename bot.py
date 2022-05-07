@@ -79,22 +79,22 @@ async def refresh_website(inter):
     # I think the token expires, so the followup webhook is necessary.
     msg_id = (await inter.original_message()).id
 
-    response = subprocess.run(
+    response = subprocess.Popen(
         ["/home/p/ps/psab/loconotion/update.sh"],
-        capture_output=True,
+        stdout=subprocess.PIPE,
     )
+    for c in iter(lambda: response.stdout.read(1), b""):
+        sys.stdout.buffer.write(c)
+        sys.stdout.buffer.flush()
 
     content = (
         "Website refreshed successfully."
         if response.returncode == 0
         else f"Website refresh failed with exit code {response.returncode}. Check system log for details."
     )
-    await inter.followup.edit_message(msg_id, content=content)
+    await bot.get_message(msg_id).edit(content=content)
 
     print_flush(content)
-    if response.returncode != 0:
-        print_flush("website refresh stdout:", response.stdout.decode())
-        print_flush("website refresh stderr:", response.stderr.decode())
 
 
 @bot.slash_command()
