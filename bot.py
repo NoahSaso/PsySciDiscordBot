@@ -86,11 +86,12 @@ async def refresh_website(inter):
     for c in iter(lambda: response.stdout.read(1), b""):
         sys.stdout.buffer.write(c)
         sys.stdout.buffer.flush()
+    returncode = response.wait()
 
     content = (
         "Website refreshed successfully."
-        if response.returncode == 0
-        else f"Website refresh failed with exit code {response.returncode}. Check system log for details."
+        if returncode == 0
+        else f"Website refresh failed with exit code {returncode}. Check system log for details."
     )
     await bot.get_message(msg_id).edit(content=content)
 
