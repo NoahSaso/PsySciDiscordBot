@@ -1,5 +1,5 @@
 import sys
-from config import ADMIN_ROLE_ID
+from config import ADMIN_ROLE_IDS
 
 
 def print_flush(*args, **kwargs):
@@ -8,7 +8,7 @@ def print_flush(*args, **kwargs):
 
 
 async def check_admin_and_respond_if_not(inter):
-    if not inter.author.get_role(ADMIN_ROLE_ID):
+    if not any(inter.author.get_role(role_id) for role_id in ADMIN_ROLE_IDS):
         await inter.response.send_message(
             "You do not have permission to run this command."
         )
